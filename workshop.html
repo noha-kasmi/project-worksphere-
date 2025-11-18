@@ -11,8 +11,8 @@
 <body>
     <div class="container">
         <div class="right">
-             <div class="panel-header">
-                <button id="addNew_WorkerButton">
+             <div class="side-bar">
+                <button id="ajouter-agent">
                      ajouter un agent 
                 </button>
             </div>
@@ -35,9 +35,9 @@
 
 
 
-    <div id="FormOf_ADD_worker" class="background-form hidden">
-    <div class="modal-form-container">
-        <form id="workerForm">
+    <div id="FormOf_ADD_worker" class="fond-formulaire hidden">
+    <div class="conteneur-modal">
+        <form id="formulaire-agent">
             <h3>Ajouter un agent </h3>
             
             <div class="input-block">
@@ -95,6 +95,20 @@
                             <label for="exp-end-1">fin du jour </label>
                             <input id="exp-end-1" type="date" class="exp-end-date">
                         </div>
+                        <button type="button" class="supprimer-experience">Supprimer</button>
                     </div>
+
+                    <button type="button" id="ajouterExperienceBtn">+ Ajouter une expérience</button>
+
+                    <div class="boutons-formulaire">
+                    <button type="submit" id="boutonSoumettre">Soumettre</button>
+                    <button type="button" id="boutonAnnuler">Annuler</button>
+                </div>
+
+                </form>
+        </div>
+    </div>
+
+    <script src="validation-formulaire.js"></script>
 </body>
 </html>
