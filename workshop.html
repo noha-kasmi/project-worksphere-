@@ -1,141 +1,37 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorkSphere</title>
+    <title>Virtual Workspace</title>
     <link rel="stylesheet" href="workshop.css">
+
+
 </head>
 <body>
-    <div class="menu-burger">
-        <div class="burger-icon" id="burger-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <nav class="sidebar" id="sidebar">
-            <h2>Menu WorkSphere</h2>
-            <button class="add-worker-btn">Ajouter un Employé</button>
-            <div class="menu-options">
-                <div class="menu-item">Gestion du Personnel</div>
-                <div class="menu-item">Plan d'Étage</div>
-                <div class="menu-item">Rapports</div>
-                <div class="menu-item">Paramètres</div>
-            </div>
-        </nav>
-    </div>
-
     <div class="container">
-        <!-- <aside class="main-sidebar">
-            <h2>Personnel Non Assigné</h2>
-            <div class="staff-list" id="unassigned-staff">
-                <div class="empty-message">Aucun employé pour le moment</div>
+        <div class="right">
+             <div class="panel-header">
+                <button id="addNew_WorkerButton">
+                     Add New Worker
+                </button>
             </div>
-        </aside> -->
+        
+            
+        </div> 
 
-        <!-- <main class="main-content"> 
-            <h1>Plan d'Étage WorkSphere</h1>
-            <div class="floor-plan">
-                <div class="zone" id="conference-room">
-                    <h3>Salle de Conférence</h3>
-                    <div class="zone-staff">
-                        <div class="zone-staff-empty">Aucun employé assigné</div>
-                    </div>
-                    <button class="add-to-zone">+</button>
-                </div>
-                <div class="zone" id="reception">
-                    <h3>Réception</h3>
-                    <div class="zone-staff">
-                        <div class="zone-staff-empty">Aucun employé assigné</div>
-                    </div>
-                    <button class="add-to-zone">+</button>
-                </div>
-                <div class="zone" id="server-room">
-                    <h3>Salle des Serveurs</h3>
-                    <div class="zone-staff">
-                        <div class="zone-staff-empty">Aucun employé assigné</div>
-                    </div>
-                    <button class="add-to-zone">+</button>
-                </div>
-                <div class="zone" id="security-room">
-                    <h3>Salle de Sécurité</h3>
-                    <div class="zone-staff">
-                        <div class="zone-staff-empty">Aucun employé assigné</div>
-                    </div>
-                    <button class="add-to-zone">+</button>
-                </div>
-                <div class="zone" id="staff-room">
-                    <h3>Salle du Personnel</h3>
-                    <div class="zone-staff">
-                        <div class="zone-staff-empty">Aucun employé assigné</div>
-                    </div>
-                    <button class="add-to-zone">+</button>
-                </div>
-                <div class="zone" id="archive-room">
-                    <h3>Salle d'Archives</h3>
-                    <div class="zone-staff">
-                        <div class="zone-staff-empty">Aucun employé assigné</div>
-                    </div>
-                    <button class="add-to-zone">+</button>
-                </div>
+        <div class="left">
+            <div class="rooms">
+                <img class="image-rooms" src="images/workspace.jpg" alt="rooms">
+                <div class="room-one R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
+                <div class="room-two R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
+                <div class="room-three R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
+                <div class="room-four R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
+                <div class="room-five R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
+                <div class="room-six R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
             </div>
-        </main>  
-    </div>-->
-
-    <div class="modal" id="add-worker-modal">
-        <div class="modal-content">
-            <button class="close-btn">&times;</button>
-            <h2>Ajouter un Employé</h2>
-            <form id="worker-form">
-                <div class="form-group">
-                    <label for="name">Nom:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="role">Rôle:</label>
-                    <select id="role" name="role" required>
-                        <option value="">Sélectionnez un rôle</option>
-                        <option value="manager">Manager</option>
-                        <option value="receptionist">Réceptionniste</option>
-                        <option value="technician">Technicien IT</option>
-                        <option value="security">Agent de sécurité</option>
-                        <option value="cleaning">Nettoyage</option>
-                        <option value="other">Autre</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="photo">Photo (URL):</label>
-                    <input type="url" id="photo" name="photo">
-                    <div class="photo-preview">
-                        <img src="" alt="Aperçu" class="preview-img" style="display: none;">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Téléphone:</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-                <div class="form-group">
-                    <label>Expériences professionnelles:</label>
-                    <div id="experiences-container">
-                        <div class="experience-item">
-                            <input type="text" name="experience" placeholder="Expérience professionnelle">
-                            <button type="button" class="remove-exp">X</button>
-                        </div>
-                    </div>
-                    <button type="button" class="add-exp">+ Ajouter une expérience</button>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn">Ajouter</button>
-                    <button type="button" class="cancel-btn">Annuler</button>
-                </div>
-            </form>
         </div>
-    </div>
-    <script src="script.js"></script>
-    
+    </div> 
+
 </body>
 </html>
