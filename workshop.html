@@ -13,7 +13,7 @@
         <div class="right">
              <div class="panel-header">
                 <button id="addNew_WorkerButton">
-                     Add New Worker
+                     ajouter un agent 
                 </button>
             </div>
         
@@ -23,15 +23,78 @@
         <div class="left">
             <div class="rooms">
                 <img class="image-rooms" src="images/workspace.jpg" alt="rooms">
-                <div class="room-one R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
-                <div class="room-two R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
-                <div class="room-three R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
-                <div class="room-four R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
-                <div class="room-five R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
-                <div class="room-six R"><button id="addToRoom"><span class="material-symbols-outlined">add</span></button></div>
+                <div class="room-one R"><button id="addToRoom"><span class="material-symbols-outlined">ajouter</span></button></div>
+                <div class="room-two R"><button id="addToRoom"><span class="material-symbols-outlined">ajouter </span></button></div>
+                <div class="room-three R"><button id="addToRoom"><span class="material-symbols-outlined">ajouter</span></button></div>
+                <div class="room-four R"><button id="addToRoom"><span class="material-symbols-outlined">ajouter</span></button></div>
+                <div class="room-five R"><button id="addToRoom"><span class="material-symbols-outlined">ajouter </span></button></div>
+                <div class="room-six R"><button id="addToRoom"><span class="material-symbols-outlined">ajouter </span></button></div>
             </div>
         </div>
     </div> 
 
+
+
+    <div id="FormOf_ADD_worker" class="background-form hidden">
+    <div class="modal-form-container">
+        <form id="workerForm">
+            <h3>Ajouter un agent </h3>
+            
+            <div class="input-block">
+                <label for="Input-name">le nom</label>
+                <input id="Input-name" type="text">
+                <div id="errorNameMessage" class="error-message"></div>
+            </div>
+            
+            <div class="input-block">
+                <label for="Input-role">le role</label>
+                <select id="Input-role">
+                    <option value="">choissisez un role</option>
+                    <option value="Receptionnistes">Receptionnistes</option>
+                    <option value="Techniciens_IT">Techniciens IT</option>
+                    <option value="sécurité">sécurité</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Nettoyage">Nettoyage</option>
+                </select>
+                <div id="errorRoleMessage" class="error-message"></div>
+            </div>
+            <div class="input-block">
+                <label for="Input-image">image </label>
+                <input id="Input-image" type="url">
+                <div id="errorURLMessage" class="error-message"></div>
+            </div>
+            
+            <div class="imageWorker"></div>
+            
+            <div class="input-block">
+                <label for="Input-email">l'email</label>
+                <input id="Input-email" type="email">
+                <div id="errorEmailMessage" class="error-message"></div>
+            </div>
+            
+            <div class="input-block">
+                <label for="Input-telephone">telephone</label>
+                <input id="Input-telephone" type="tel">
+                <div id="errorTeleMessage" class="error-message"></div>
+            </div>
+
+            <div id="experiencesContainer">
+                
+                <div class="experience-block">
+                    <div class="input-block">
+                        <label for="exp-title-1">le nom d'experience</label>
+                        <input id="exp-title-1" type="text" class="exp-title">
+                        <div id="errorExpTitle1" class="error-message"></div>
+                    </div>
+                    <div class="date-pair">
+                        <div class="input-block date-input-group">
+                            <label for="exp-start-1">début de jour</label>
+                            <input id="exp-start-1" type="date" class="exp-start-date">
+                        </div>
+                        <div class="input-block date-input-group">
+                            <label for="exp-end-1">fin du jour </label>
+                            <input id="exp-end-1" type="date" class="exp-end-date">
+                        </div>
+                    </div>
 </body>
 </html>
