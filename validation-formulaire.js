@@ -1,28 +1,80 @@
 "use strict";
 
-const formulaireAgent = document.querySelector("#formulaire-agent");
-const nomInput = document.querySelector("#Input-name");
-const roleInput = document.querySelector("#Input-role");
-const imageInput = document.querySelector("#Input-image");
-const emailInput = document.querySelector("#Input-email");
-const telephoneInput = document.querySelector("#Input-telephone");
-const ajouterAgentBtn = document.querySelector("#ajouter-agent");
-const fondFormulaire = document.querySelector("#FormOf_ADD_worker");
-const boutonAnnuler = document.querySelector("#boutonAnnuler");
+const formulaireAgent = document.getElementById("formulaire-agent");
+const nomInput = document.getElementById("Input-name");
+const roleInput = document.getElementById("Input-role");
+const imageInput = document.getElementById("Input-image");
+const emailInput = document.getElementById("Input-email");
+const telephoneInput = document.getElementById("Input-telephone");
+const ajouterAgentBtn = document.getElementById("ajouter-agent");
+const fondFormulaire = document.getElementById("FormOf_ADD_worker");
+const listeAgentsContainer = document.getElementById("liste-agents");
 
-const nomError = document.querySelector("#errorNameMessage");
-const roleError = document.querySelector("#errorRoleMessage");
-const imageError = document.querySelector("#errorURLMessage");
-const emailError = document.querySelector("#errorEmailMessage");
-const telephoneError = document.querySelector("#errorTeleMessage");
+const nomError = document.getElementById("errorNameMessage");
+const roleError = document.getElementById("errorRoleMessage");
+const imageError = document.getElementById("errorURLMessage");
+const emailError = document.getElementById("errorEmailMessage");
+const telephoneError = document.getElementById("errorTeleMessage");
 
 const nomRegex = /^[a-zA-ZÀ-ÿ]+(\s[a-zA-ZÀ-ÿ]+)*$/; 
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
 const telephoneRegex = /^0[1-9](\s?\d{2}){4}$/; 
 const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/; 
 
+function sauvegarderAgents(agents) {
+    localStorage.setItem('agents', JSON.stringify(agents));
+}
+
+function chargerAgents() {
+    const agents = localStorage.getItem('agents');
+    return agents ? JSON.parse(agents) : [];
+}
+
+function afficherAgents() {
+    const agents = chargerAgents();
+    listeAgentsContainer.innerHTML = '';
+
+    if (agents.length === 0) {
+        listeAgentsContainer.innerHTML = '<div class="no-agents">Aucun agent ajouté</div>';
+        return;
+    }
+
+    agents.forEach((agent, index) => {
+        const agentCard = document.createElement('div');
+        agentCard.className = 'agent-card';
+        agentCard.innerHTML = `
+            <img src="${agent.image}" alt="${agent.nom}" class="agent-image" 
+                 onerror="this.src='https://via.placeholder.com/60x60/3498db/ffffff?text=?'">
+            <div class="agent-info">
+                <div class="agent-nom">${agent.nom}</div>
+                <div class="agent-role">${agent.role}</div>
+                <div class="agent-contact">${agent.email} • ${agent.telephone}</div>
+            </div>
+            <button class="supprimer-agent" data-index="${index}">×</button>
+        `;
+        listeAgentsContainer.appendChild(agentCard);
+    });
+
+    document.querySelectorAll('.supprimer-agent').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            supprimerAgent(index);
+        });
+    });
+}
+
+function supprimerAgent(index) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')) {
+        const agents = chargerAgents();
+        agents.splice(index, 1);
+        sauvegarderAgents(agents);
+        afficherAgents();
+    }
+}
+
 function validateInput(input, regex, errorElement, errorMessage) {
-    if (!regex.test(input.value.trim())) {
+    const value = input.value.trim();
+    if (!value || !regex.test(value)) {
         input.classList.add("invalid");
         errorElement.textContent = errorMessage;
         return false;
@@ -34,7 +86,7 @@ function validateInput(input, regex, errorElement, errorMessage) {
 }
 
 function validateRole() {
-    if (roleInput.value === "") {
+    if (!roleInput.value) {
         roleInput.classList.add("invalid");
         roleError.textContent = "Veuillez choisir un rôle";
         return false;
@@ -45,21 +97,21 @@ function validateRole() {
     }
 }
 
-nomInput.addEventListener("input", () =>
-    validateInput(nomInput, nomRegex, nomError, "Nom invalide - uniquement des lettres")
-);
+nomInput.addEventListener("input", () => {
+    validateInput(nomInput, nomRegex, nomError, "Nom invalide - uniquement des lettres");
+});
 
-emailInput.addEventListener("input", () =>
-    validateInput(emailInput, emailRegex, emailError, "Format d'email invalide")
-);
+emailInput.addEventListener("input", () => {
+    validateInput(emailInput, emailRegex, emailError, "Format d'email invalide");
+});
 
-telephoneInput.addEventListener("input", () =>
-    validateInput(telephoneInput, telephoneRegex, telephoneError, "Numéro de téléphone invalide")
-);
+telephoneInput.addEventListener("input", () => {
+    validateInput(telephoneInput, telephoneRegex, telephoneError, "Numéro de téléphone invalide (ex: 0123456789)");
+});
 
-imageInput.addEventListener("input", () =>
-    validateInput(imageInput, urlRegex, imageError, "URL d'image invalide")
-);
+imageInput.addEventListener("input", () => {
+    validateInput(imageInput, urlRegex, imageError, "URL d'image invalide");
+});
 
 roleInput.addEventListener("change", validateRole);
 
@@ -67,10 +119,12 @@ ajouterAgentBtn.addEventListener("click", function() {
     fondFormulaire.classList.remove("hidden");
 });
 
-boutonAnnuler.addEventListener("click", function() {
+
+document.getElementById("boutonAnnuler").addEventListener("click", function() {
     fondFormulaire.classList.add("hidden");
     resetForm();
 });
+
 
 fondFormulaire.addEventListener("click", function(e) {
     if (e.target === fondFormulaire) {
@@ -78,6 +132,7 @@ fondFormulaire.addEventListener("click", function(e) {
         resetForm();
     }
 });
+
 
 let experienceCount = 1;
 
@@ -106,6 +161,7 @@ function ajouterExperience() {
     
     document.getElementById("experiencesContainer").appendChild(nouveauBloc);
     
+
     nouveauBloc.querySelector(".supprimer-experience").addEventListener("click", function() {
         if (document.querySelectorAll(".experience-block").length > 1) {
             nouveauBloc.remove();
@@ -117,13 +173,14 @@ function validerExperiences() {
     const blocsExperience = document.querySelectorAll(".experience-block");
     let isValid = true;
     
-    blocsExperience.forEach((bloc, index) => {
+    blocsExperience.forEach((bloc) => {
         const titre = bloc.querySelector(".exp-title");
         const dateDebut = bloc.querySelector(".exp-start-date");
         const dateFin = bloc.querySelector(".exp-end-date");
         const erreurTitre = bloc.querySelector(".error-message");
         
-        if (titre.value.trim() === "") {
+
+        if (!titre.value.trim()) {
             titre.classList.add("invalid");
             erreurTitre.textContent = "Le nom de l'expérience est requis";
             isValid = false;
@@ -132,11 +189,14 @@ function validerExperiences() {
             erreurTitre.textContent = "";
         }
         
+
         if (dateDebut.value && dateFin.value) {
             if (new Date(dateDebut.value) > new Date(dateFin.value)) {
+                dateDebut.classList.add("invalid");
                 dateFin.classList.add("invalid");
                 isValid = false;
             } else {
+                dateDebut.classList.remove("invalid");
                 dateFin.classList.remove("invalid");
             }
         }
@@ -145,14 +205,16 @@ function validerExperiences() {
     return isValid;
 }
 
+
 imageInput.addEventListener("input", function() {
     const preview = document.querySelector(".imageWorker");
     if (this.value) {
-        preview.innerHTML = `<img src="${this.value}" alt="Preview" style="max-width: 100px; max-height: 100px; border-radius: 5px;">`;
+        preview.innerHTML = `<img src="${this.value}" alt="Preview" style="max-width: 100px; max-height: 100px; border-radius: 5px; margin-top: 10px;">`;
     } else {
         preview.innerHTML = "";
     }
 });
+
 
 function resetForm() {
     formulaireAgent.reset();
@@ -160,25 +222,29 @@ function resetForm() {
     document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
     document.querySelector(".imageWorker").innerHTML = "";
     
+
     const conteneurExperiences = document.getElementById("experiencesContainer");
-    const premiersBlocs = conteneurExperiences.querySelectorAll(".experience-block");
-    for (let i = 1; i < premiersBlocs.length; i++) {
-        premiersBlocs[i].remove();
+    const blocsExperience = conteneurExperiences.querySelectorAll(".experience-block");
+    for (let i = 1; i < blocsExperience.length; i++) {
+        blocsExperience[i].remove();
     }
     experienceCount = 1;
 }
 
+
 formulaireAgent.addEventListener("submit", function(event) {
     event.preventDefault();
     
+    
     const isNomValid = validateInput(nomInput, nomRegex, nomError, "Nom invalide - uniquement des lettres");
     const isEmailValid = validateInput(emailInput, emailRegex, emailError, "Format d'email invalide");
-    const isTelephoneValid = validateInput(telephoneInput, telephoneRegex, telephoneError, "Numéro de téléphone invalide");
+    const isTelephoneValid = validateInput(telephoneInput, telephoneRegex, telephoneError, "Numéro de téléphone invalide (ex: 0123456789)");
     const isImageValid = validateInput(imageInput, urlRegex, imageError, "URL d'image invalide");
     const isRoleValid = validateRole();
     const isExperiencesValid = validerExperiences();
     
     if (isNomValid && isEmailValid && isTelephoneValid && isImageValid && isRoleValid && isExperiencesValid) {
+
         const agent = {
             nom: nomInput.value.trim(),
             role: roleInput.value,
@@ -188,12 +254,13 @@ formulaireAgent.addEventListener("submit", function(event) {
             experiences: []
         };
         
+
         document.querySelectorAll(".experience-block").forEach(bloc => {
             const titre = bloc.querySelector(".exp-title").value.trim();
             const dateDebut = bloc.querySelector(".exp-start-date").value;
             const dateFin = bloc.querySelector(".exp-end-date").value;
             
-            if (titre && dateDebut && dateFin) {
+            if (titre) {
                 agent.experiences.push({
                     titre: titre,
                     dateDebut: dateDebut,
@@ -202,45 +269,31 @@ formulaireAgent.addEventListener("submit", function(event) {
             }
         });
         
+
+        const agents = chargerAgents();
+        agents.push(agent);
+        sauvegarderAgents(agents);
+        
         console.log("Agent créé:", agent);
         alert("Agent ajouté avec succès !");
         
+
+        afficherAgents();
         fondFormulaire.classList.add("hidden");
         resetForm();
-        
-
-        
     } else {
         alert("Veuillez corriger les erreurs dans le formulaire");
     }
 });
 
+
 document.addEventListener("DOMContentLoaded", function() {
-    if (!document.querySelector("#ajouterExperienceBtn")) {
-        const boutonAjouterExp = document.createElement("button");
-        boutonAjouterExp.type = "button";
-        boutonAjouterExp.id = "ajouterExperienceBtn";
-        boutonAjouterExp.textContent = "+ Ajouter une expérience";
-        boutonAjouterExp.addEventListener("click", ajouterExperience);
-        
-        document.getElementById("experiencesContainer").parentNode.insertBefore(
-            boutonAjouterExp, 
-            document.getElementById("experiencesContainer").nextSibling
-        );
-    }
+
+    document.getElementById("ajouterExperienceBtn").addEventListener("click", ajouterExperience);
     
-    if (!document.querySelector("#boutonAnnuler")) {
-        const boutonsContainer = document.createElement("div");
-        boutonsContainer.className = "boutons-formulaire";
-        boutonsContainer.innerHTML = `
-            <button type="submit" id="boutonSoumettre">Soumettre</button>
-            <button type="button" id="boutonAnnuler">Annuler</button>
-        `;
-        formulaireAgent.appendChild(boutonsContainer);
-        
-        document.querySelector("#boutonAnnuler").addEventListener("click", function() {
-            fondFormulaire.classList.add("hidden");
-            resetForm();
-        });
-    }
+    document.querySelector(".supprimer-experience").addEventListener("click", function() {
+        console.log("Le premier bloc d'expérience ne peut pas être supprimé");
+    });
+    
+    afficherAgents();
 });

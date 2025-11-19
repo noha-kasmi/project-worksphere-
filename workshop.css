@@ -64,7 +64,7 @@
     height: 100%;
     z-index: 0;
 }
-.R{ 
+.Room{ 
     color: white; 
     z-index: 1;
     display: flex;
@@ -72,7 +72,7 @@
     align-items: center;
 }
 
-.R button {
+.Room button {
     padding: 2px 4px;
     background-color: rgba(255, 255, 255, 0.85); 
     border: 1px solid #0000008a;
@@ -83,21 +83,109 @@
     transition: all 0.2s;
 }
 
-
-.R button:hover {
+.Room button:hover {
     background-color: #ffffff;
     opacity: 1;
     transform: scale(1.05); 
 }
-.room-one{ grid-area: room-one; background-color: rgba(245, 147, 147, 0.195);}
-.room-two{ grid-area: room-two; background-color: rgba(238, 130, 238, 0.195);}
-.room-three{ grid-area: room-three; background-color: rgba(128, 128, 128, 0.195);}
-.room-four{ grid-area: room-four; background-color: rgba(16, 240, 225, 0.195);}
-.room-five{ grid-area: room-five; background-color: rgba(210, 105, 30, 0.195);}
-.room-six{ grid-area: room-six; background-color: rgba(61, 255, 47, 0.195);}
 
+.room1{ grid-area: room-one; }
+.room2{ grid-area: room-two; }
+.room3{ grid-area: room-three; }
+.room4{ grid-area: room-four; }
+.room5{ grid-area: room-five; }
+.room6{ grid-area: room-six; }
 
+.agents-list {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+}
 
+.agents-list h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 18px;
+}
+
+.liste-agents-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ecf0f1;
+    border-radius: 10px;
+    background: #f8f9fa;
+}
+
+.agent-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease;
+}
+
+.agent-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.agent-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3498db;
+}
+
+.agent-info {
+    flex: 1;
+}
+
+.agent-nom {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.agent-role {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.agent-contact {
+    font-size: 12px;
+    color: #95a5a6;
+}
+
+.supprimer-agent {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.supprimer-agent:hover {
+    background: #c0392b;
+}
+
+.no-agents {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 20px;
+    font-style: italic;
+}
 
 @media (min-width: 1024px) {
     .container {
@@ -128,7 +216,7 @@
         max-width: 900px; 
         aspect-ratio: 24 / 16; 
     }
-    .R button {
+    .Room button {
         padding: 4px 8px;
         border-radius: 8px;
         font-weight: bold;
@@ -162,7 +250,6 @@
     background-color: black;
 }
 
-
 .fond-formulaire {
     position: fixed;
     top: 0;
@@ -176,6 +263,7 @@
     z-index: 1000;
     backdrop-filter: blur(5px);
 }
+
 .conteneur-modal {
     background-color: white;
     padding: 40px;
@@ -199,9 +287,11 @@
     border-radius: 20px;
     z-index: -1;
 }
+
 .hidden {
     display: none ;
 }
+
 #formulaire-agent {
     background: white;
     padding: 30px;
@@ -216,7 +306,6 @@
     font-size: 24px;
     font-weight: 700;
 }
-
 
 .input-block {
     margin-bottom: 20px;
@@ -247,23 +336,6 @@
     border-color: #3498db;
     background: white;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-
-
-.invalid {
-    border: 2px solid #e74c3c !important;
-    background-color: #fdf2f2 !important;
-}
-
-.error-message {
-    color: #e74c3c;
-    font-size: 12px;
-    margin-top: 5px;
-    display: block;
-}
-
-.hidden {
-    display: none !important;
 }
 
 .boutons-formulaire {
@@ -298,4 +370,24 @@
     border-radius: 3px;
     cursor: pointer;
     margin-top: 10px;
+}
+
+#ajouterExperienceBtn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.invalid {
+    border-color: #e74c3c ;
 }
