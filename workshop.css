@@ -14,8 +14,6 @@
     padding: 20px 0; 
 }
 
-/* test */
-
 .right {
     order: 2;
     width: 90%; 
@@ -294,14 +292,14 @@
     display: none ;
 }
 
-#formulaire-agent {
+#form-agent {
     background: white;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-#formulaire-agent h3 {
+#form-agent h3 {
     text-align: center;
     margin-bottom: 30px;
     color: #2c3e50;
@@ -340,56 +338,40 @@
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-.boutons-formulaire {
+
+
+.ligne-boutons {
     display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 15px;
 }
 
-.boutons-formulaire button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+.ligne-boutons button {
+    flex: 1;                      
+    padding: 12px 0;           
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
+    border: none;
 }
 
-#boutonSoumettre {
-    background: #27ae60;
+#aj-exp {
+    background: #3498db;
     color: white;
 }
 
-#boutonAnnuler {
+#boutonannuler {
     background: #95a5a6;
+    color: white;
+}
+
+#boutonsoumettre {
+    background: #27ae60;
     color: white;
 }
 
 .supprimer-experience {
     background: #e74c3c;
     color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-#ajouterExperienceBtn {
-    background: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px 0;
-}
-
-.error-message {
-    color: #e74c3c;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.invalid {
-    border-color: #e74c3c ;
 }
