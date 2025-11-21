@@ -341,7 +341,6 @@ const sallesConfig = {
     }
 };
 
-// Mapping des rôles pour correspondre aux valeurs du formulaire
 const roleMapping = {
     'Receptionnistes': 'Réceptionniste',
     'Techniciens_IT': 'Technicien IT',
@@ -350,16 +349,13 @@ const roleMapping = {
     'Nettoyage': 'Nettoyage'
 };
 
-// Initialisation des salles
 function initialiserSalles() {
     const agents = chargerAgents();
     
-    // Réinitialiser les salles
     Object.keys(sallesConfig).forEach(salleId => {
         sallesConfig[salleId].employes = [];
     });
     
-    // Répartir les agents dans leurs salles
     agents.forEach(agent => {
         if (agent.salle) {
             if (sallesConfig[agent.salle] && sallesConfig[agent.salle].employes.length < sallesConfig[agent.salle].capacite) {
@@ -372,21 +368,17 @@ function initialiserSalles() {
     verifierSallesRequises();
 }
 
-// Afficher les employés dans les salles
 function afficherEmployesDansSalles() {
     Object.keys(sallesConfig).forEach(salleId => {
         const salle = document.querySelector(`.${salleId}`);
         if (salle) {
-            // Nettoyer la salle
             salle.querySelectorAll('.employe-dans-salle').forEach(el => el.remove());
             
-            // Ajouter les employés
             sallesConfig[salleId].employes.forEach(employe => {
                 const badgeEmploye = creerBadgeEmploye(employe);
                 salle.appendChild(badgeEmploye);
             });
             
-            // Mettre à jour le compteur
             const boutonAdd = salle.querySelector('.aj-room');
             if (boutonAdd) {
                 const compteur = salle.querySelector('.compteur-salle') || document.createElement('span');
@@ -404,7 +396,6 @@ function afficherEmployesDansSalles() {
     });
 }
 
-// Créer un badge d'employé pour affichage dans les salles
 function creerBadgeEmploye(employe) {
     const badge = document.createElement('div');
     badge.className = 'employe-dans-salle';
@@ -447,7 +438,6 @@ function creerBadgeEmploye(employe) {
         margin-left: auto;
     `;
     
-    // Événements
     badge.querySelector('.retirer-salle').addEventListener('click', (e) => {
         e.stopPropagation();
         retirerEmployeDeSalle(employe.id);
@@ -460,7 +450,6 @@ function creerBadgeEmploye(employe) {
     return badge;
 }
 
-// Retirer un employé d'une salle
 function retirerEmployeDeSalle(employeId) {
     const agents = chargerAgents();
     const agentIndex = agents.findIndex(a => a.id === employeId);
@@ -473,7 +462,6 @@ function retirerEmployeDeSalle(employeId) {
     }
 }
 
-// Vérifier les salles requises
 function verifierSallesRequises() {
     Object.keys(sallesConfig).forEach(salleId => {
         const salle = sallesConfig[salleId];
@@ -487,7 +475,6 @@ function verifierSallesRequises() {
     });
 }
 
-// === GESTION DES BOUTONS "AJOUTER" DANS LES SALLES ===
 
 function initialiserBoutonsSalles() {
     document.querySelectorAll('.aj-room').forEach((bouton, index) => {
@@ -500,7 +487,6 @@ function initialiserBoutonsSalles() {
     });
 }
 
-// Ouvrir le modal d'affectation à une salle
 function ouvrirModalAffectation(salleId) {
     const salle = sallesConfig[salleId];
     const agentsDisponibles = chargerAgents().filter(agent => 
@@ -514,7 +500,6 @@ function ouvrirModalAffectation(salleId) {
         return;
     }
     
-    // Créer le modal de sélection
     const modal = document.createElement('div');
     modal.className = 'fond-formulaire';
     modal.innerHTML = `
@@ -539,7 +524,6 @@ function ouvrirModalAffectation(salleId) {
     
     document.body.appendChild(modal);
     
-    // Styles pour le modal d'affectation
     modal.querySelector('.liste-agents-modal').style.cssText = `
         max-height: 300px;
         overflow-y: auto;
@@ -592,7 +576,7 @@ function ouvrirModalAffectation(salleId) {
     });
 }
 
-// Affecter un employé à une salle
+
 function affecterEmployeASalle(employeId, salleId) {
     const agents = chargerAgents();
     const agentIndex = agents.findIndex(a => a.id === employeId);
@@ -605,7 +589,6 @@ function affecterEmployeASalle(employeId, salleId) {
     }
 }
 
-// === PROFIL EMPLOYÉ ===
 
 function afficherProfilEmploye(employe) {
     const modal = document.createElement('div');
@@ -642,7 +625,7 @@ function afficherProfilEmploye(employe) {
     
     document.body.appendChild(modal);
     
-    // Styles pour le profil
+   
     modal.querySelector('.profil-employe').style.cssText = `
         display: flex;
         gap: 20px;
@@ -672,8 +655,7 @@ function afficherProfilEmploye(employe) {
         border-radius: 5px;
         margin: 5px 0;
     `;
-    
-    // Événements
+ 
     modal.querySelector('#fermerProfil').addEventListener('click', () => {
         document.body.removeChild(modal);
     });
@@ -692,179 +674,6 @@ function afficherProfilEmploye(employe) {
     });
 }
 
-// Modal d'affectation générale
-function ouvrirModalAffectationGenerale(employeId) {
-    const agent = chargerAgents().find(a => a.id === employeId);
-    if (!agent) return;
-    
-    const modal = document.createElement('div');
-    modal.className = 'fond-formulaire';
-    modal.innerHTML = `
-        <div class="conteneur-modal">
-            <h3>Affecter ${agent.nom} à une salle</h3>
-            <div class="salles-disponibles">
-                ${Object.keys(sallesConfig).map(salleId => {
-                    const salle = sallesConfig[salleId];
-                    const estAutorise = salle.rolesAutorises.includes(agent.role);
-                    const estPlein = salle.employes.length >= salle.capacite;
-                    const estAssignable = estAutorise && !estPlein;
-                    
-                    return `
-                        <div class="salle-option ${estAssignable ? '' : 'salle-indisponible'}" 
-                             data-salle="${salleId}" 
-                             style="${estAssignable ? 'cursor: pointer;' : 'opacity: 0.5;'}">
-                            <strong>${salle.nom}</strong>
-                            <div>${salle.employes.length}/${salle.capacite} employés</div>
-                            ${!estAutorise ? '<div class="raison-indispo">Rôle non autorisé</div>' : ''}
-                            ${estPlein ? '<div class="raison-indispo">Capacité maximale atteinte</div>' : ''}
-                        </div>
-                    `;
-                }).join('')}
-            </div>
-            <div class="boutons-formulaire">
-                <button id="annulerAffectationGen">Annuler</button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Styles
-    modal.querySelector('.salles-disponibles').style.cssText = `
-        display: grid;
-        gap: 10px;
-        margin: 20px 0;
-    `;
-    
-    modal.querySelectorAll('.salle-option').forEach(element => {
-        element.style.cssText = `
-            padding: 15px;
-            border: 1px solid #ecf0f1;
-            border-radius: 8px;
-            background: #f8f9fa;
-        `;
-        
-        if (element.classList.contains('salle-indisponible')) {
-            return;
-        }
-        
-        element.addEventListener('click', () => {
-            const salleId = element.getAttribute('data-salle');
-            affecterEmployeASalle(employeId, salleId);
-            document.body.removeChild(modal);
-        });
-        
-        element.addEventListener('mouseenter', function() {
-            this.style.backgroundColor = '#e3f2fd';
-        });
-        
-        element.addEventListener('mouseleave', function() {
-            this.style.backgroundColor = '#f8f9fa';
-        });
-    });
-    
-    modal.querySelector('.raison-indispo').style.cssText = `
-        font-size: 12px;
-        color: #e74c3c;
-        margin-top: 5px;
-    `;
-    
-    modal.querySelector('#annulerAffectationGen').addEventListener('click', () => {
-        document.body.removeChild(modal);
-    });
-    
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            document.body.removeChild(modal);
-        }
-    });
-}
-
-// Recherche et filtrage
-function initialiserRecherche() {
-    const searchInput = document.createElement('input');
-    searchInput.placeholder = 'Rechercher un agent...';
-    searchInput.style.cssText = `
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ecf0f1;
-        border-radius: 5px;
-    `;
-    
-    const filterSelect = document.createElement('select');
-    filterSelect.innerHTML = `
-        <option value="">Tous les rôles</option>
-        <option value="Receptionnistes">Réceptionnistes</option>
-        <option value="Techniciens_IT">Techniciens IT</option>
-        <option value="sécurité">Sécurité</option>
-        <option value="Manager">Manager</option>
-        <option value="Nettoyage">Nettoyage</option>
-    `;
-    filterSelect.style.cssText = `
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ecf0f1;
-        border-radius: 5px;
-    `;
-    
-    const agentsListContainer = document.querySelector('.agents-list');
-    agentsListContainer.insertBefore(filterSelect, agentsListContainer.querySelector('.liste-agents-container'));
-    agentsListContainer.insertBefore(searchInput, filterSelect);
-    
-    searchInput.addEventListener('input', filtrerAgents);
-    filterSelect.addEventListener('change', filtrerAgents);
-}
-
-function filtrerAgents() {
-    const searchTerm = document.querySelector('input[placeholder="Rechercher un agent..."]').value.toLowerCase();
-    const filterRole = document.querySelector('select').value;
-    
-    const agents = chargerAgents();
-    const agentsFiltres = agents.filter(agent => {
-        const correspondRecherche = agent.nom.toLowerCase().includes(searchTerm);
-        const correspondRole = !filterRole || agent.role === filterRole;
-        return correspondRecherche && correspondRole;
-    });
-    
-    afficherAgentsFiltres(agentsFiltres);
-}
-
-function afficherAgentsFiltres(agentsFiltres) {
-    const container = document.getElementById('liste-agents');
-    
-    if (agentsFiltres.length === 0) {
-        container.innerHTML = '<div class="no-agents">Aucun agent trouvé</div>';
-        return;
-    }
-    
-    container.innerHTML = agentsFiltres.map((agent, index) => {
-        const agentsComplets = chargerAgents();
-        const indexReel = agentsComplets.findIndex(a => a.id === agent.id);
-        
-        return `
-            <div class="agent-card">
-                <img src="${agent.image}" alt="${agent.nom}" class="agent-image"
-                     onerror="this.src='https://via.placeholder.com/60x60/3498db/ffffff?text=?'">
-                <div class="agent-info">
-                    <div class="agent-nom">${agent.nom}</div>
-                    <div class="agent-role">${agent.role}</div>
-                    <div class="agent-contact">${agent.email} • ${agent.telephone}</div>
-                    ${agent.salle ? `<div class="agent-salle">📍 ${sallesConfig[agent.salle].nom}</div>` : ''}
-                </div>
-                <button class="supprimer-agent" data-index="${indexReel}">×</button>
-            </div>
-        `;
-    }).join('');
-    
-    document.querySelectorAll('.supprimer-agent').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = parseInt(this.getAttribute('data-index'));
-            supprimerAgent(index);
-        });
-    });
-}
 function afficherAgents() {
     const agents = chargerAgents();
     const container = document.getElementById('liste-agents');
@@ -883,10 +692,10 @@ function afficherAgents() {
                     <div class="agent-nom">${agent.nom}</div>
                     <div class="agent-role">${agent.role}</div>
                     <div class="agent-contact">${agent.email} • ${agent.telephone}</div>
-                    ${agent.salle ? `<div class="agent-salle">📍 ${sallesConfig[agent.salle].nom}</div>` : ''}
+                    ${agent.salle ? `<div class="agent-salle"> ${sallesConfig[agent.salle].nom}</div>` : ''}
                 </div>
                 <div class="agent-actions">
-                    <button class="affecter-agent" data-id="${agent.id}">📍</button>
+                    <button class="affecter-agent" data-id="${agent.id}"></button>
                     <button class="supprimer-agent" data-index="${index}">×</button>
                 </div>
             </div>
@@ -898,55 +707,13 @@ function afficherAgents() {
             ouvrirModalAffectationGenerale(agentId);
         });
     });
-    
-    // Événements pour les boutons de suppression
+
     document.querySelectorAll('.supprimer-agent').forEach(btn => {
         btn.addEventListener('click', function() {
             const index = parseInt(this.getAttribute('data-index'));
             supprimerAgent(index);
         });
     });
-}
-
-function ajouterStylesSupplementaires() {
-    const style = document.createElement('style');
-    style.textContent = `
-        .agent-actions {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .affecter-agent {
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            padding: 5px 8px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
-        .affecter-agent:hover {
-            background: #2980b9;
-        }
-        
-        .agent-salle {
-            font-size: 11px;
-            color: #27ae60;
-            margin-top: 2px;
-        }
-        
-        .salle-indisponible {
-            cursor: not-allowed !important;
-        }
-        
-        .raison-indispo {
-            font-size: 12px;
-            color: #e74c3c;
-            margin-top: 5px;
-        }
-    `;
-    document.head.appendChild(style);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
