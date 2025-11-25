@@ -520,24 +520,24 @@ function supprimerAgent(agentId) {
         const agent = agents[agentIndex];
         
         // Retirer l'agent de sa salle
-        if (agent.salle) {
-            const salleId = Object.keys(sallesConfig).find(function(id) {
-                return sallesConfig[id].nom === agent.salle;
-            });
-            if (salleId) {
-                const salle = sallesConfig[salleId];
-                const employeIndex = salle.employes.indexOf(agentId);
-                if (employeIndex !== -1) {
-                    salle.employes.splice(employeIndex, 1);
-                }
+        // if (agent.salle) {
+        //     const salleId = Object.keys(sallesConfig).find(function(id) {
+        //         return sallesConfig[id].nom === agent.salle;
+        //     });
+        //     if (salleId) {
+        //         const salle = sallesConfig[salleId];
+        //         const employeIndex = salle.employes.indexOf(agentId);
+        //         if (employeIndex !== -1) {
+        //             salle.employes.splice(employeIndex, 1);
+        //         }
                 
-                // Retirer l'image
-                const agentImage = document.querySelector(`#${salleId} .agent-in-room[data-agent-id="${agentId}"]`);
-                if (agentImage) {
-                    agentImage.remove();
-                }
-            }
-        }
+        //         // Retirer l'image
+        //         const agentImage = document.querySelector(`#${salleId} .agent-in-room[data-agent-id="${agentId}"]`);
+        //         if (agentImage) {
+        //             agentImage.remove();
+        //         }
+        //     }
+        // }
         
         // Supprimer l'agent
         agents.splice(agentIndex, 1);
@@ -559,29 +559,11 @@ function initialiserApp() {
     ajouterAgentBtn.addEventListener('click', function() {
         fondFormulaire.classList.remove('hidden');
     });
-    
-    // Bouton X pour fermer le formulaire
-    const closeButton = document.createElement('button');
-    closeButton.innerHTML = '×';
-    closeButton.className = 'close-formulaire';
-    closeButton.addEventListener('click', function() {
-        fondFormulaire.classList.add('hidden');
-        reinitialiserFormulaire();
-    });
-    document.querySelector('.conteneur-modal').prepend(closeButton);
-    
+     
     // Bouton Annuler
     document.getElementById('boutonAnnuler').addEventListener('click', function() {
         fondFormulaire.classList.add('hidden');
         reinitialiserFormulaire();
-    });
-    
-    // Fermer en cliquant à l'extérieur
-    fondFormulaire.addEventListener('click', function(e) {
-        if (e.target === fondFormulaire) {
-            fondFormulaire.classList.add('hidden');
-            reinitialiserFormulaire();
-        }
     });
     
     // Validation en temps réel
@@ -672,5 +654,5 @@ function initialiserApp() {
     }
 }
 
-// Démarrer l'application
+
 document.addEventListener('DOMContentLoaded', initialiserApp);
