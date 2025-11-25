@@ -1,118 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virtual Workspace</title>
-    <link rel="stylesheet" href="workshop.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">Virtual Workspace</span>  
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteneur principal -->
     <div class="container">
-        <div class="right">
+        <!-- Partie gauche : Liste des agents -->
+        <div class="right-cont">
             <div class="side-bar">
-                <button id="ajouter-agent">
-                    ajouter un agent 
-                </button>
+                <button id="ajouter-agent">+ Ajouter un agent</button>
             </div>
             
             <div class="agents-list">
                 <h3>Liste des Agents</h3>
-                <div id="liste-agents" class="liste-agents-container">
-
-                    
-                </div>
-            </div>
-        </div> 
-
-        <div class="left">
-            <div class="rooms">
-                <img class="image-rooms" src="images/workspace.jpg" alt="rooms">
-                <div class="room1 Room"><button class="aj-room"><span class="material-icons">add</span></button></div>
-                <div class="room2 Room"><button class="aj-room"><span class="material-icons">add</span></button></div>
-                <div class="room3 Room"><button class="aj-room"><span class="material-icons">add</span></button></div>
-                <div class="room4 Room"><button class="aj-room"><span class="material-icons">add</span></button></div>
-                <div class="room5 Room"><button class="aj-room"><span class="material-icons">add</span></button></div>
-                <div class="room6 Room"><button class="aj-room"><span class="material-icons">add</span></button></div>
+                <div id="liste-agents" class="liste-agents-container"></div>
             </div>
         </div>
-    </div> 
 
-    <div id="FormOf_ADD_worker" class="fond-formulaire hidden">
+        <!-- Partie droite : Image avec rooms -->
+        <div class="left-cont">
+            <div class="rooms">
+                <img class="image-rooms" src="images/workspace.jpg" alt="Plan du workspace">
+                
+                <!-- Rooms positionnées sur l'image -->
+                <div id="room1" class="room1 Room">
+                    <div class="room-content">
+                        <h4>reception</h4>
+                        <button class="aj-room" data-room-name="Reception">Ajouter</button>
+                    </div>
+                </div>
+                
+                <div id="room2" class="room2 Room">
+                    <div class="room-content">
+                        <h4>bureau manager</h4>
+                        <button class="aj-room" data-room-name="Bureau Manager">Ajouter</button>
+                    </div>
+                </div>
+                
+                <div id="room3" class="room3 Room">
+                    <div class="room-content">
+                        <h4>salle de securite</h4>
+                        <button class="aj-room" data-room-name="Salle Securite">Ajouter</button>
+                    </div>
+                </div>
+                
+                <div id="room4" class="room4 Room">
+                    <div class="room-content">
+                        <h4>technicien IT</h4>
+                        <button class="aj-room" data-room-name="Techniciens IT">Ajouter</button>
+                    </div>
+                </div>
+                
+                <div id="room5" class="room5 Room">
+                    <div class="room-content">
+                        <h4>service nettoyage</h4>
+                        <button class="aj-room" data-room-name="Service Nettoyage">Ajouter</button>
+                    </div>
+                </div>
+                
+                <div id="room6" class="room6 Room">
+                    <div class="room-content">
+                        <h4>salle de reunion</h4>
+                        <button class="aj-room" data-room-name="Salle Reunion">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulaire modal -->
+    <div id="formulaire-dajoute" class="fond-formulaire hidden">
         <div class="conteneur-modal">
             <form id="formulaire-agent">
-                <h3>Ajouter un agent</h3>
-                
+                <h3>Ajouter un agent</h3> 
+
                 <div class="input-block">
-                    <label for="Input-name">le nom</label>
-                    <input id="Input-name" type="text">
-                    <div id="errorNameMessage" class="error-message"></div>
-                </div>
-                
-                <div class="input-block">
-                    <label for="Input-role">le role</label>
-                    <select id="Input-role">
-                        <option value="">choissisez un role</option>
-                        <option value="Receptionnistes">Receptionnistes</option>
-                        <option value="Techniciens_IT">Techniciens IT</option>
-                        <option value="sécurité">sécurité</option>
-                        <option value="Manager">Manager</option>
-                        <option value="Nettoyage">Nettoyage</option>
-                    </select>
-                    <div id="errorRoleMessage" class="error-message"></div>
-                </div>
-                
-                <div class="input-block">
-                    <label for="Input-image">image</label>
-                    <input id="Input-image" type="url">
-                    <div id="errorURLMessage" class="error-message"></div>
-                </div>
-                
-                <div class="imageWorker"></div>
-                
-                <div class="input-block">
-                    <label for="Input-email">l'email</label>
-                    <input id="Input-email" type="email">
-                    <div id="errorEmailMessage" class="error-message"></div>
-                </div>
-                
-                <div class="input-block">
-                    <label for="Input-telephone">telephone</label>
-                    <input id="Input-telephone" type="tel">
-                    <div id="errorTeleMessage" class="error-message"></div>
+                    <label for="input-name">Nom complet</label>
+                    <input id="input-name" type="text" placeholder="Entrez le nom">
+                    <div id="errornamemessage" class="error-message"></div>
                 </div>
 
-                <div id="experiencesContainer">
+                <div class="input-block">
+                    <label for="input-role">Role</label>
+                    <select id="input-role">
+                        <option value="receptionnistes">Receptionniste</option>
+                        <option value="techniciens_IT">Technicien IT</option>
+                        <option value="securite">Securite</option>
+                        <option value="manager">Manager</option>
+                        <option value="nettoyage">Nettoyage</option>
+                    </select>
+                    <div id="errorRolemessage" class="error-message"></div>
+                </div>
+
+                <div class="input-block">
+                    <label for="input-image">Photo -URL</label>
+                    <input id="input-image" type="url" placeholder="https://example.com/image.jpg">
+                    <div id="errorURLmessage" class="error-message"></div>
+                </div>
+
+                <div class="input-block">
+                    <label for="input-email">Email</label>
+                    <input id="input-email" type="email" placeholder="email@example.com">
+                    <div id="errorEmailmessage" class="error-message"></div>
+                </div>
+
+                <div class="input-block">
+                    <label for="input-telephone">Telephone</label>
+                    <input id="input-telephone" type="tel" placeholder="06 12 34 56 78">
+                    <div id="errorTelemessage" class="error-message"></div>
+                </div>
+
+                <div id="experience-agent">
                     <div class="experience-block">
                         <div class="input-block">
-                            <label for="exp-title-1">le nom d'experience</label>
-                            <input id="exp-title-1" type="text" class="exp-title">
-                            <div class="error-message"></div>
+                            <label>Experience professionnelle</label>
+                            <input type="text" class="exp-title" placeholder="Poste occupé">
                         </div>
+
                         <div class="date-pair">
                             <div class="input-block date-input-group">
-                                <label for="exp-start-1">début de jour</label>
-                                <input id="exp-start-1" type="date" class="exp-start-date">
+                                <label>Date de debut</label>
+                                <input type="date" class="exp-start-date">
                             </div>
+
                             <div class="input-block date-input-group">
-                                <label for="exp-end-1">fin du jour</label>
-                                <input id="exp-end-1" type="date" class="exp-end-date">
+                                <label>Date de fin</label>
+                                <input type="date" class="exp-end-date">
                             </div>
                         </div>
+
                         <button type="button" class="supprimer-experience">Supprimer</button>
                     </div>
                 </div>
 
-                <button type="button" id="ajouterExperienceBtn">Ajouter une expérience</button>
+                <button type="button" id="ajouterexperienceBtn"> Ajouter une experience</button>
 
                 <div class="boutons-formulaire">
-                    <button type="submit" id="boutonSoumettre">Soumettre</button>
+                    <button type="submit" id="boutonSoumettre">Ajouter l agent</button>
                     <button type="button" id="boutonAnnuler">Annuler</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script src="validation-formulaire.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
