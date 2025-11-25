@@ -1,6 +1,6 @@
 "use strict";
 
-// Éléments du DOM
+// elements du DOM
 const formulaireAgent = document.getElementById("formulaire-agent");
 const nomInput = document.getElementById("input-name");
 const roleInput = document.getElementById("input-role");
@@ -11,7 +11,7 @@ const ajouterAgentBtn = document.getElementById("ajouter-agent");
 const fondFormulaire = document.getElementById("formulaire-dajoute");
 const listeAgentsContainer = document.getElementById("liste-agents");
 
-// Messages d'erreur
+// Messages erreur
 const nomError = document.getElementById("errornamemessage");
 const roleError = document.getElementById("errorRolemessage");
 const imageError = document.getElementById("errorURLmessage");
@@ -24,7 +24,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const telephoneRegex = /^(06|07)[0-9]{8}$/;
 const urlRegex = /^https?:\/\/.+\..+$/;
 
-// Configuration des salles
+// Configuration salle
 const sallesConfig = {
     room1: { 
         nom: 'Réception', 
@@ -64,7 +64,7 @@ const sallesConfig = {
     }
 };
 
-// ==================== LOCALSTORAGE ====================
+// localstorage
 
 // Sauvegarder les agents dans le localStorage
 function sauvegarderAgents(agents) {
@@ -81,8 +81,6 @@ function chargerAgents() {
     }
 }
 
-// ==================== AFFICHAGE DES AGENTS ====================
-
 // Afficher tous les agents dans la liste
 function afficherAgents() {
     const agents = chargerAgents();
@@ -94,7 +92,7 @@ function afficherAgents() {
         return;
     }
 
-    // Pour chaque agent, créer une carte
+    // Pour chaque agent, creer une carte
     for (let i = 0; i < agents.length; i++) {
         const agent = agents[i];
         const agentCard = document.createElement('div');
@@ -105,21 +103,21 @@ function afficherAgents() {
             <div class="agent-info">
                 <div class="agent-name">${agent.nom}</div>
                 <div class="agent-role">${agent.role}</div>
-                <div class="agent-contact">${agent.email} • ${agent.telephone}</div>
+                <div class="agent-contact">${agent.email} . ${agent.telephone}</div>
                 <span class="agent-department">${agent.salle || 'Non affecté'}</span>
             </div>
-            <button class="supprimer-agent" data-id="${agent.id}">×</button>
+            <button class="supprimer-agent" data-id="${agent.id}">X</button>
         `;
         
         listeAgentsContainer.appendChild(agentCard);
 
-        // Événement pour supprimer l'agent
+        // evnement pour supprimer agent
         agentCard.querySelector('.supprimer-agent').addEventListener('click', function(e) {
             e.stopPropagation();
             supprimerAgent(agent.id);
         });
 
-        // Événement pour afficher le profil
+        // evenement pour afficher le profil
         agentCard.addEventListener('click', function(e) {
             if (!e.target.classList.contains('supprimer-agent')) {
                 afficherProfilAgent(agent);
@@ -128,7 +126,7 @@ function afficherAgents() {
     }
 }
 
-// Afficher le profil d'un agent
+// Afficher le profil un agent
 function afficherProfilAgent(agent) {
     const experiencesHTML = agent.experiences && agent.experiences.length > 0 
         ? agent.experiences.map(exp => `
@@ -142,7 +140,7 @@ function afficherProfilAgent(agent) {
     const modalHTML = `
         <div class="modal-profil">
             <div class="modal-profil-content">
-                <button class="close-profil">×</button>
+                <button class="close-profil">X</button>
                 <div class="profil-header">
                     <img src="${agent.image}" alt="${agent.nom}" class="profil-image"
                         onerror="this.src='https://via.placeholder.com/150'">
@@ -151,7 +149,7 @@ function afficherProfilAgent(agent) {
                         <p class="profil-role">${agent.role}</p>
                         <p class="profil-contact">${agent.email}</p>
                         <p class="profil-contact">${agent.telephone}</p>
-                        <p class="profil-localisation">📍 ${agent.salle || 'Non affecté'}</p>
+                        <p class="profil-localisation"> ${agent.salle || 'Non affecté'}</p>
                     </div>
                 </div>
                 <div class="profil-experiences">
@@ -163,12 +161,12 @@ function afficherProfilAgent(agent) {
         </div>
     `;
 
-    // Créer et afficher la modal
+    // Creer et afficher la modal
     const modalElement = document.createElement('div');
     modalElement.innerHTML = modalHTML;
     document.body.appendChild(modalElement);
 
-    // Événements pour fermer la modal
+    // evenements pour fermer la modal
     modalElement.querySelector('.close-profil').addEventListener('click', function() {
         modalElement.remove();
     });
@@ -184,9 +182,7 @@ function afficherProfilAgent(agent) {
     });
 }
 
-// ==================== GESTION DES SALLES ====================
-
-// Ouvrir la sélection d'agents pour une salle
+// Ouvrir la selection agents pour salle
 function ouvrirSelectionSalle(roomId, roomName) {
     const agents = chargerAgents();
     const salle = sallesConfig[roomId];
@@ -201,7 +197,7 @@ function ouvrirSelectionSalle(roomId, roomName) {
         return;
     }
 
-    // Créer la liste des agents disponibles
+    // Creer la liste des agents disponibles
     let message = `Sélectionnez un agent pour ${roomName}:\n\n`;
     for (let i = 0; i < agentsDisponibles.length; i++) {
         message += `${i + 1}. ${agentsDisponibles[i].nom} (${agentsDisponibles[i].role})\n`;
@@ -220,18 +216,18 @@ function ouvrirSelectionSalle(roomId, roomName) {
     }
 }
 
-// Ajouter un agent à une salle
+// Ajouter un agent a une salle
 function ajouterAgentASalle(roomId, agent) {
     const salle = sallesConfig[roomId];
     const agents = chargerAgents();
 
-    // Vérifier la capacité
+    // Verifier la capacite
     if (salle.employes.length >= salle.capacite) {
         alert("Capacité maximale atteinte pour cette salle !");
         return false;
     }
 
-    // Retirer l'agent de son ancienne salle
+    // Retirer agent de son ancienne salle
     if (agent.salle) {
         const ancienneSalleId = Object.keys(sallesConfig).find(function(id) {
             return sallesConfig[id].nom === agent.salle;
@@ -242,7 +238,7 @@ function ajouterAgentASalle(roomId, agent) {
             if (index !== -1) {
                 ancienneSalle.employes.splice(index, 1);
             }
-            // Retirer l'image de l'ancienne salle
+            // Retirer image de ancienne salle
             const ancienneImage = document.querySelector(`#${ancienneSalleId} .agent-in-room[data-agent-id="${agent.id}"]`);
             if (ancienneImage) {
                 ancienneImage.remove();
@@ -250,7 +246,7 @@ function ajouterAgentASalle(roomId, agent) {
         }
     }
 
-    // Mettre à jour l'agent
+    // Mettre jour agent
     const nouveauxAgents = agents.map(function(a) {
         if (a.id === agent.id) {
             return { ...a, salle: salle.nom };
@@ -258,16 +254,16 @@ function ajouterAgentASalle(roomId, agent) {
         return a;
     });
 
-    // Mettre à jour la salle
+    // Mettre a jour la salle
     salle.employes.push(agent.id);
 
     // Sauvegarder
     sauvegarderAgents(nouveauxAgents);
 
-    // Afficher l'agent dans la salle
+    // Afficher agent dans la salle
     afficherAgentDansSalle(roomId, agent);
 
-    // Mettre à jour l'affichage
+    // Mettre a jour affichage
     afficherAgents();
 
     alert(`Agent ${agent.nom} ajouté à ${salle.nom} avec succès !`);
@@ -278,13 +274,13 @@ function ajouterAgentASalle(roomId, agent) {
 function afficherAgentDansSalle(roomId, agent) {
     const roomElement = document.getElementById(roomId);
 
-    // Supprimer l'image existante
+    // Supprimer image existante
     const imageExistante = roomElement.querySelector(`.agent-in-room[data-agent-id="${agent.id}"]`);
     if (imageExistante) {
         imageExistante.remove();
     }
 
-    // Créer l'image
+    // Creer image
     const img = document.createElement('img');
     img.src = agent.image;
     img.alt = agent.nom;
@@ -292,13 +288,13 @@ function afficherAgentDansSalle(roomId, agent) {
     img.dataset.agentId = agent.id;
     img.title = `${agent.nom} (${agent.role})`;
 
-    // Position aléatoire
+    // Position aleatoire
     const positionX = 10 + Math.random() * 70;
     const positionY = 10 + Math.random() * 70;
     img.style.left = `${positionX}%`;
     img.style.top = `${positionY}%`;
 
-    // Événement pour afficher le profil
+    // evenement pour afficher le profil
     img.addEventListener('click', function(e) {
         e.stopPropagation();
         afficherProfilAgent(agent);
@@ -307,7 +303,7 @@ function afficherAgentDansSalle(roomId, agent) {
     roomElement.appendChild(img);
 }
 
-// Charger les agents dans les salles au démarrage
+// Charger les agents dans les salles au demarrage
 function chargerAgentsDansSalles() {
     const agents = chargerAgents();
     
@@ -323,8 +319,6 @@ function chargerAgentsDansSalles() {
         }
     }
 }
-
-// ==================== VALIDATION FORMULAIRE ====================
 
 // Valider un champ
 function validerChamp(input, regex, erreurElement, message) {
@@ -349,7 +343,7 @@ function validerChamp(input, regex, erreurElement, message) {
     return true;
 }
 
-// Valider le téléphone
+// Valider le tele
 function validerTelephone() {
     const valeur = telephoneInput.value.trim();
     const numeroNettoye = valeur.replace(/\s/g, '');
@@ -363,11 +357,11 @@ function validerTelephone() {
     if (!telephoneRegex.test(numeroNettoye)) {
         telephoneInput.classList.add('invalid');
         telephoneInput.classList.remove('valid');
-        telephoneError.textContent = 'Le numéro doit commencer par 06 ou 07 et avoir 10 chiffres';
+        telephoneError.textContent = 'Le numero doit commencer par 06 ou 07 et avoir 10 chiffres';
         return false;
     }
     
-    // Formater le numéro
+    // Formater le num
     const numeroFormate = numeroNettoye.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5');
     telephoneInput.value = numeroFormate;
     
@@ -377,12 +371,12 @@ function validerTelephone() {
     return true;
 }
 
-// Valider le rôle
+// Valider le role
 function validerRole() {
     if (roleInput.value === '') {
         roleInput.classList.add('invalid');
         roleInput.classList.remove('valid');
-        roleError.textContent = 'Veuillez choisir un rôle';
+        roleError.textContent = 'Veuillez choisir un role';
         return false;
     }
     
@@ -392,7 +386,7 @@ function validerRole() {
     return true;
 }
 
-// Valider l'image
+// Valider image
 function validerImage() {
     const valeur = imageInput.value.trim();
     
@@ -415,26 +409,7 @@ function validerImage() {
     return true;
 }
 
-// Afficher l'aperçu de l'image
-function afficherApercuImage() {
-    const url = imageInput.value.trim();
-    const containerApercu = document.querySelector('.imageworker');
-    
-    if (url && urlRegex.test(url)) {
-        containerApercu.innerHTML = `
-            <div style="margin-top: 10px;">
-                <p style="font-size: 12px; margin-bottom: 5px; color: #666;">Aperçu :</p>
-                <img src="${url}" alt="Aperçu" 
-                     style="max-width: 100px; max-height: 100px; border-radius: 5px; border: 2px solid #3498db;"
-                     onerror="this.style.display='none'">
-            </div>
-        `;
-    } else {
-        containerApercu.innerHTML = '';
-    }
-}
-
-// Réinitialiser le formulaire
+// reintialiser le formulaire
 function reinitialiserFormulaire() {
     formulaireAgent.reset();
     const champs = [nomInput, roleInput, imageInput, emailInput, telephoneInput];
@@ -448,7 +423,7 @@ function reinitialiserFormulaire() {
     document.querySelector('.imageworker').innerHTML = '';
 }
 
-// Gérer les expériences
+// gerer les experiences
 function gererExperiences() {
     const boutonAjouterExp = document.getElementById('ajouterexperienceBtn');
     const containerExperiences = document.getElementById('experience-agent');
@@ -458,8 +433,8 @@ function gererExperiences() {
         nouvelleExperience.className = 'experience-block';
         nouvelleExperience.innerHTML = `
             <div class="input-block">
-                <label>Experience professionnelle</label>
-                <input type="text" class="exp-title" placeholder="Poste occupé">
+                <label>Experience professionnel</label>
+                <input type="text" class="exp-title" placeholder="Poste occupe">
             </div>
             <div class="date-pair">
                 <div class="input-block date-input-group">
@@ -476,7 +451,7 @@ function gererExperiences() {
         
         containerExperiences.appendChild(nouvelleExperience);
         
-        // Événement de suppression
+        // evenement de suppression
         nouvelleExperience.querySelector('.supprimer-experience').addEventListener('click', function() {
             if (document.querySelectorAll('.experience-block').length > 1) {
                 nouvelleExperience.remove();
@@ -484,7 +459,7 @@ function gererExperiences() {
         });
     });
     
-    // Événement pour la première expérience
+    // evenement pour la 1ere experience
     document.querySelector('.supprimer-experience').addEventListener('click', function() {
         if (document.querySelectorAll('.experience-block').length > 1) {
             this.closest('.experience-block').remove();
@@ -492,7 +467,7 @@ function gererExperiences() {
     });
 }
 
-// Vérifier si le formulaire est valide
+// Verifier si le formulaire est valide
 function formulaireEstValide() {
     const nomValide = validerChamp(nomInput, nomRegex, nomError, 'Nom invalide');
     const emailValide = validerChamp(emailInput, emailRegex, emailError, 'Email invalide');
@@ -503,11 +478,9 @@ function formulaireEstValide() {
     return nomValide && emailValide && telephoneValide && imageValide && roleValide;
 }
 
-// ==================== SUPPRESSION AGENTS ====================
-
 // Supprimer un agent
 function supprimerAgent(agentId) {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')) {
+    if (!confirm('etes-vous sur de vouloir supprimer cet agent ')) {
         return;
     }
 
@@ -518,35 +491,13 @@ function supprimerAgent(agentId) {
     
     if (agentIndex !== -1) {
         const agent = agents[agentIndex];
-        
-        // Retirer l'agent de sa salle
-        // if (agent.salle) {
-        //     const salleId = Object.keys(sallesConfig).find(function(id) {
-        //         return sallesConfig[id].nom === agent.salle;
-        //     });
-        //     if (salleId) {
-        //         const salle = sallesConfig[salleId];
-        //         const employeIndex = salle.employes.indexOf(agentId);
-        //         if (employeIndex !== -1) {
-        //             salle.employes.splice(employeIndex, 1);
-        //         }
-                
-        //         // Retirer l'image
-        //         const agentImage = document.querySelector(`#${salleId} .agent-in-room[data-agent-id="${agentId}"]`);
-        //         if (agentImage) {
-        //             agentImage.remove();
-        //         }
-        //     }
-        // }
-        
-        // Supprimer l'agent
+
+         // Supprimer l'agent
         agents.splice(agentIndex, 1);
         sauvegarderAgents(agents);
         afficherAgents();
     }
 }
-
-// ==================== INITIALISATION ====================
 
 function initialiserApp() {
     // Afficher les agents existants
@@ -555,7 +506,7 @@ function initialiserApp() {
     // Charger les agents dans les salles
     chargerAgentsDansSalles();
     
-    // Événement pour ouvrir le formulaire
+    // evenement pour ouvrir le formulaire
     ajouterAgentBtn.addEventListener('click', function() {
         fondFormulaire.classList.remove('hidden');
     });
@@ -566,7 +517,7 @@ function initialiserApp() {
         reinitialiserFormulaire();
     });
     
-    // Validation en temps réel
+    // Validation en temps reel
     nomInput.addEventListener('input', function() {
         validerChamp(nomInput, nomRegex, nomError, 'Nom invalide');
     });
@@ -591,7 +542,7 @@ function initialiserApp() {
     
     roleInput.addEventListener('change', validerRole);
     
-    // Gestion des expériences
+    // Gestion des experiense
     gererExperiences();
     
     // Soumission du formulaire
@@ -599,7 +550,7 @@ function initialiserApp() {
         e.preventDefault();
         
         if (formulaireEstValide()) {
-            // Récupérer les expériences
+            // recupere les experiences
             const experiences = [];
             const blocksExperience = document.querySelectorAll('.experience-block');
             for (let i = 0; i < blocksExperience.length; i++) {
@@ -617,7 +568,7 @@ function initialiserApp() {
                 }
             }
             
-            // Créer nouvel agent
+            // Creer nouvel agent
             const nouvelAgent = {
                 id: 'agent_' + Date.now(),
                 nom: nomInput.value.trim(),
@@ -643,7 +594,7 @@ function initialiserApp() {
         }
     });
     
-    // Événements pour les boutons "Ajouter" des salles
+    // evenements pour les boutons Ajouter des salles
     const boutonsSalles = document.querySelectorAll('.aj-room');
     for (let i = 0; i < boutonsSalles.length; i++) {
         boutonsSalles[i].addEventListener('click', function() {
